@@ -1,0 +1,68 @@
+<!-- Tabel data -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Jumlah Uang</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($data_list as $data) { ?>
+            <tr>
+                <td><?php echo $data['id']; ?></td>
+                <td><?php echo $data['jumlah_uang']; ?></td>
+                <td>
+                    <button class="edit-button" data-id="<?php echo $data['id']; ?>">Edit</button>
+                </td>
+            </tr>
+        <?php } ?>
+    </tbody>
+</table>
+
+<!-- Modal Edit -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Data dengan Format Rupiah</h2>
+        <label for="rupiahInput">Jumlah Uang:</label>
+        <input type="text" id="rupiahInput" value="">
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk format input menjadi rupiah
+    function formatRupiah(angka) {
+        var numberString = angka.toString().replace(/[^,\d]/g, '');
+        var parts = numberString.split(',');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+        return 'Rp ' + parts.join(',');
+    }
+
+    // Membuka modal saat tombol Edit ditekan
+    var editButtons = document.querySelectorAll('.edit-button');
+    var modal = document.getElementById('editModal');
+    var modalInput = modal.querySelector('#rupiahInput');
+
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var jumlahUang = this.parentNode.previousElementSibling.textContent;
+            modalInput.value = formatRupiah(jumlahUang.replace('Rp ', ''));
+            modal.style.display = 'block';
+        });
+    });
+
+    // Menutup modal saat tombol Close ditekan
+    var closeButton = modal.querySelector('.close');
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Event listener saat input berubah
+    modalInput.addEventListener('input', function() {
+        var value = modalInput.value;
+        modalInput.value = formatRupiah(value);
+    });
+</script>

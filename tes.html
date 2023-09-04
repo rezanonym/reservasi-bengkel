@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Input Format Rupiah</title>
+</head>
+<body>
+    <h1>Input Format Rupiah</h1>
+    <input type="text" id="rupiahInput">
+    
+    <script>
+        // Fungsi untuk format input menjadi rupiah
+        function formatRupiah(angka) {
+            var numberString = angka.toString().replace(/[^,\d]/g, '');
+            var parts = numberString.split(',');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            return 'Rp ' + parts.join(',');
+        }
+
+        // Mendapatkan elemen input
+        var rupiahInput = document.getElementById('rupiahInput');
+
+        // Event listener saat input berubah
+        rupiahInput.addEventListener('input', function() {
+            var value = rupiahInput.value;
+            rupiahInput.value = formatRupiah(value);
+        });
+    </script>
+</body>
+</html>
